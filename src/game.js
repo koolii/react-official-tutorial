@@ -2,18 +2,53 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null
+    };
+  }
   render() {
     return (
-      <button className="square">
-        {/* TODO */}
+      <button className="square" onClick={this.props.onClick()} >
+        {this.props.value}
       </button>
     );
   }
 }
 
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+}
+
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null)
+    };
+  }
+
+  handleClick(i) {
+    // copy this.state.squares
+    const squares = this.state.squares.slice();
+    squares[i] = 'X';
+    this.setState({squares: squares});
+  }
+
   renderSquare(i) {
-    return <Square />;
+    // onClickをpropsとして渡す
+    // これでBoardからSquareに対してイベントを実行することができる
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    );
   }
 
   render() {
